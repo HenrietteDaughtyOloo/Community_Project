@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
     about = models.TextField(blank=True)
+    phone_number = models.IntegerField(blank=True)
 
     def __str__(self) -> str:
         return super().__str__()
-    
