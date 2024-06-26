@@ -8,7 +8,7 @@ from .serializers import MessageSerializer
 from rest_framework import generics
 from .models import Message
 from rest_framework.permissions import IsAuthenticated
-from communities.permissions import IsAdminOrMember
+from communities.permissions import IsAdminOrMember, IsMember
 from django.conf import settings
 from Crypto.Cipher import AES
 import base64
@@ -37,7 +37,7 @@ def decrypt_message(encrypted_message):
 class CreateListOfMessages(generics.ListCreateAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated,IsAdminOrMember]
+    permission_classes = [IsAuthenticated,IsMember]
 
 
     def perform_create(self, serializer):

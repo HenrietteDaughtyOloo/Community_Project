@@ -7,7 +7,9 @@ from usermessages.models import Message
 
 class IsAdminOrMember(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated
+        if request.method in SAFE_METHODS:
+            return True
+        return request.user.role == 'admin'
 
     def has_object_permission(self, request, view, obj):
         if isinstance(obj, Community):
@@ -15,3 +17,6 @@ class IsAdminOrMember(permissions.BasePermission):
         elif isinstance(obj, Message):
             return request.user in obj.community.members.all() or request.user.is_staff
         return False
+class IsMember(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role == 'member'
