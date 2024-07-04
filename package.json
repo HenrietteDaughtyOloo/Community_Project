@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@signalapp/libsignal-client": "^0.51.1"
+  }
+}

@@ -8,6 +8,7 @@ from .serializers import MessageSerializer
 from rest_framework import generics
 from .models import Message
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from communities.permissions import IsAdminOrMember, IsMember
 from django.conf import settings
 from Crypto.Cipher import AES
@@ -45,6 +46,10 @@ class CreateListOfMessages(generics.ListCreateAPIView):
         encrypted_content = encrypt_message(content)
         serializer.save(sender=self.request.user, content=encrypted_content)
 
+    def get_queryset(self):
+        community_id = self.request.query_params.get('community_id')
+        return Message.objects.filter(community_id=community_id)
+
 class MessageDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
@@ -55,3 +60,8 @@ class MessageDetails(generics.RetrieveUpdateDestroyAPIView):
         instance.content = decrypt_message(instance.content)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def secure_view(request):
+    return Response({'message': 'This is a secure endpoint'})

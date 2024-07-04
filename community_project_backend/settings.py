@@ -59,7 +59,10 @@ INSTALLED_APPS = [
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
     },
 }
 ASGI_APPLICATION = 'community_project_backend.asgi.application'
@@ -192,5 +195,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://127.0.0.1",
     "http://192.168.0.17",
+    "http://192.168.1.23"
 ]
-ALLOWED_HOSTS = ['192.168.0.17','192.168.1.153']
+ALLOWED_HOSTS = ['192.168.0.17','192.168.1.153','192.168.1.23']

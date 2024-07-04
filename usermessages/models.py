@@ -9,4 +9,4 @@ class Message(models.Model):
     sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content[:20]
+        return f"{self.sender.username} - {self.content[:20]}"
